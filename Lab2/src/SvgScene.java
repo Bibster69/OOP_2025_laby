@@ -14,6 +14,11 @@ public class SvgScene {
         return this.polygons;
     }
 
+
+//    Najpierw przechodzimy się po tablicy i dodajemy nowy Point do pierwszego napotkanego miejsca w tablicy (opcjonalne)
+//    następnie jeśli żadniego nie znajedziemy to po prostu podmieniamy punkt znajdujący się na currentReplacementIndex,
+//    jeśli dojdziemy do końca tablicy, zerujemy currentReplacementIndex
+
     public void addPolygon(Polygon p) {
         for (int i = 0; i < this.polygons.length; i++) {
             if (this.polygons[i] == null) {

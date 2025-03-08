@@ -2,6 +2,9 @@ public class Point {
     public int x;
     public int y;
 
+
+//    Za pomocą @Override zastępujemy domyślną postać String naszej klasy
+    @Override
     public String toString(){
         return "Współżedna x punktu = " + x + "\nWspółżedna y punktu = " + y;
     }

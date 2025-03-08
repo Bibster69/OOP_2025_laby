@@ -9,12 +9,6 @@ public class Polygon {
         this.points = points;
     }
 
-
-//    4 - kopia płytka
-//    public Polygon(Point[] points) {
-//        this.points = points.clone();
-//    }
-
     public Polygon(Point[] points) {
         this.points = new Point[points.length];
         for (int i = 0; i < points.length; i++) {
@@ -30,10 +24,11 @@ public class Polygon {
         }
     }
 
+    @Override
     public String toString() {
         String result = "";
-        for (Point p: points)  {
-            result += p.toString() + "\n";
+        for (int i = 0; i < this.points.length; i++)  {
+            result += "Punkt nr. " + (i + 1) + "\n" + this.points[i] + "\n";
         }
 
         return result;

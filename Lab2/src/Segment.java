@@ -18,10 +18,15 @@ public class Segment {
         return end;
     }
 
+//    Poprzez stworzenie NOWYCH OBIEKTÓW a nie przekazywanie REFERENCJI obiekt
+//    Segment jest niewrażliwy na zmiany pynktów z których został stworzony
+
     public Segment(Point start, Point end) {
-        this.start = start;
-        this.end = end;
+        this.start = new Point(start);
+        this.end = new Point(end);
     }
+
+//    Konstruktor kopiujący
 
     public Segment(Segment old) {
         this.start = new Point(old.getStart().getX(), old.getStart().getY());
@@ -29,17 +34,11 @@ public class Segment {
 
     }
 
-    // kopia płytka
-//    public Segment(Segment old) {
-//        this.start = old.start;
-//        this.end = old.end;
-//
-//    }
-
     public double length(){
         return Math.sqrt(Math.pow(this.end.getX() - this.start.getX(), 2) + Math.pow(this.end.getY() - this.start.getY(), 2));
     }
 
+    @Override
     public String toString(){
         return "Punkt start odcinka: " + this.start + "\nPunkt end odcinka: " + this.end;
     }

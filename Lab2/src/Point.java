@@ -1,6 +1,13 @@
 public class Point {
+
+//    Pola x i y sa teraz prywatne, więc musimy utworzyć dla nich
+//    odpowiednie metody, czyli akcesory i mutatory
+
+
     private int x;
     private int y;
+
+//    Akcesory czyli setery
 
     public void setX(int x) {
         this.x = x;
@@ -10,6 +17,8 @@ public class Point {
         this.y = y;
     }
 
+//    Mutatory czyli getery
+
     public int getX() {
         return x;
     }
@@ -18,16 +27,29 @@ public class Point {
         return y;
     }
 
+//    Następnie tworzymy 2-argumentowy konstruktor, tworzący
+//    nasz punk w miejscu określonym za pomocą argumentów
+
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
+//    Następnie bezargumentowy tworzoący punkt w punkcie (0, 0)
 
     public Point() {
         this.x = 0;
         this.y = 0;
     }
 
+//    Następnie tworzymy konstruktor kopiujący tworzący kopię GŁĘBOKĄ obiektu
+
+    public Point(Point old) {
+        this.x = old.getX();
+        this.y = old.getY();
+    }
+
+    @Override
     public String toString(){
         return "Współżedna x punktu = " + x + "\nWspółżedna y punktu = " + y;
     }
