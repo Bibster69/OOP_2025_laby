@@ -1,4 +1,4 @@
-class NegativeLifespanException extends Exception {
+public class NegativeLifespanException extends Exception {
     public NegativeLifespanException(String message) {
         super(message);
     }
