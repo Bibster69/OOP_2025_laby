@@ -1,0 +1,17 @@
+@startuml
+object p_Jan_Kowalski {
+ Jan Kowalski
+}
+object p_Anna_Kowalska {
+ Anna Kowalska
+}
+object p_Piotr_Kowalski {
+ Piotr Kowalski
+}
+object p_Zuzia_Kowalska {
+ Zuzia Kowalska
+}
+p_Piotr_Kowalski --> p_Anna_Kowalska : dziecko
+p_Piotr_Kowalski --> p_Jan_Kowalski : dziecko
+p_Zuzia_Kowalska --> p_Piotr_Kowalski : dziecko
+@enduml

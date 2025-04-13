@@ -1,7 +1,11 @@
+import javax.swing.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Person implements Comparable<Person>, Serializable {
     private String name;
@@ -9,6 +13,7 @@ public class Person implements Comparable<Person>, Serializable {
     private LocalDate birthDate;
     private LocalDate deathDate;
     private Set<Person> children;
+    private Set<Person> parents;
 
 
     public Person(String name, String surname, LocalDate birthDate, LocalDate deathDate) {
@@ -17,6 +22,7 @@ public class Person implements Comparable<Person>, Serializable {
         this.birthDate = birthDate;
         this.deathDate = deathDate;
         this.children = new HashSet<>();
+        this.parents = new HashSet<>();
     }
 
     public Set<Person> getChildren() {
@@ -35,6 +41,10 @@ public class Person implements Comparable<Person>, Serializable {
         return surname;
     }
 
+    public Set<Person> getParents() {
+        return parents;
+    }
+
     public boolean adopt(Person person){
         if (person == null || person == this) return false;
         for (Person child : person.getChildren()) {
@@ -42,7 +52,11 @@ public class Person implements Comparable<Person>, Serializable {
                 return false;
             }
         }
-        return this.children.add(person);
+        boolean adopted = this.children.add(person);
+        if (adopted) {
+            person.getParents().add(this);
+        }
+        return adopted;
     }
 
     public Person getYoungestChild(){
@@ -206,6 +220,184 @@ public class Person implements Comparable<Person>, Serializable {
         }
         return new ArrayList<>();
     }
+
+    // Zadanie 2
+
+    public String toPlantUmlObjectDiagram() {
+        String result = "@startuml\n";
+        String personId = "p_" + this.name + "_" + this.surname;
+
+        result += "object " + personId + " {\n" + " " + this.name + " " + this.surname + "\n" + "}\n";
+
+        for (Person parent : this.parents) {
+            String parentId = "p_" + parent.getName() + "_" + parent.getSurname();
+
+            result += "object " + parentId + " {\n" + " " + parent.getName() + " " + parent.getSurname() + "\n" + "}\n";
+            result += personId + " --> " + parentId + " : dziecko\n";
+        }
+        result += "@enduml\n";
+
+        return result;
+    }
+
+    // Zadanie 3
+
+    public static String toPlantUmlObjectDiagram(List<Person> persons) {
+        String result = "@startuml\n";
+
+        Map<Person, String> idMap = new HashMap<>();
+
+
+        // Kaza osoba ma przypisany identyfikator Imie_Nazwisko
+        for (Person person : persons) {
+            idMap.put(person, "p_" + person.getName() + "_" + person.getSurname());
+        }
+
+        // dodajemy wszystkie osoby
+        for (Person person : persons) {
+            String id = idMap.get(person);
+            result += "object " + id + " {\n" + " " + person.getName() + " " + person.getSurname() + "\n" + "}\n";
+        }
+
+        // Relacje dziecko rodzic
+        for (Person person : persons) {
+            for (Person parent : person.getParents()) {
+                if (idMap.containsKey(parent)) {
+                    result += idMap.get(person) + " --> " + idMap.get(parent) + " : dziecko\n";;
+                }
+
+            }
+        }
+        result += "@enduml\n";
+        return result;
+    }
+
+    // Zadanie 4
+
+    public static List<Person> filterByNameSubstring(List<Person> persons, String substring) {
+        if (substring == null || substring.isEmpty()) {return null;}
+
+        String lowerSubstring = substring.toLowerCase();
+        List<Person> result = new ArrayList<>();
+
+        for (Person person : persons) {
+            if (person.getName().toLowerCase().contains(lowerSubstring) || person.getSurname().toLowerCase().contains(lowerSubstring)) {
+                result.add(person);
+            }
+        }
+
+        return result;
+    }
+
+    // Zadanie 5
+
+    // p -> - lambda, czyli funkcja anonimowa, czyli funkcja zdefiniowana bez imienia.
+    // bardzo przydatne gdy chcemy utworzyć jakś prościutką funkcje np a + b
+
+    public static List<Person> sortByBirthYear(List<Person> persons) {
+        List<Person> sorted = new ArrayList<>(persons);
+        sorted.sort(Comparator.comparing(p -> p.getBirthDate().getYear()));
+        return sorted;
+    }
+
+    // Zadanie 6
+
+    public long getLifespan(){
+        if (deathDate == null) {return -1;}
+        return ChronoUnit.DAYS.between(birthDate, deathDate);
+    }
+
+    public static List<Person> getDeceasedSortedByLifespan(List<Person> persons) {
+        List<Person> sorted = new ArrayList<>(persons);
+
+        for (Person person : persons) {
+            if (person.getDeathDate() != null) {
+                sorted.add(person);
+            }
+        }
+
+        Collections.sort(sorted, new Comparator<Person>() {
+            @Override
+            public int compare(Person p1, Person p2) {
+                return Long.compare(p2.getLifespan(), p1.getLifespan());
+            }
+        });
+
+        return sorted;
+    }
+
+    // Zadanie 7
+
+    public static Person getOldestLivingPerson(List<Person> persons) {
+        Person oldest = null;
+
+        for (Person person : persons) {
+            if (person.getDeathDate() == null) { // żyje
+                if (oldest == null || person.getBirthDate().isBefore(oldest.getBirthDate())) {
+                    oldest = person;
+                }
+            }
+        }
+
+        return oldest;
+    }
+
+    // Zadanie 8
+
+    public String toPlantUMLWithParents(Function<String, String> postProcess) {
+        String result = "@startuml\n";
+        String personId = "obj" + System.identityHashCode(this);
+        String personLine = "object \"" + this.name + " " + this.surname + "\" as" + personId;
+        result += postProcess.apply(personLine);
+        result += "\n";
+
+        for (Person parent : this.parents) {
+            String parentId = "obj" + System.identityHashCode(this);
+            String parentLine = "object \"" + parent.getName() + " " + parent.getSurname() + "\" as" + parentId;
+            result += postProcess.apply(parentLine);
+            result += "\n";
+            result += personId + " --> " + parentId + "\n";
+        }
+        result += "@enduml\n";
+
+        return result;
+    }
+
+    // Zadanie 9
+    public static String toUML(List<Person> people, Function<String, String> postProcess, Predicate<Person> condition) {
+        String result = "@startuml\n";
+
+        Map<Person, String> idMap = new HashMap<>();
+
+        for (Person person : people) {
+            String personId = "obj" + System.identityHashCode(person);
+            idMap.put(person, personId);
+            String personLine = "object \"" + person.getName() + " " + person.getSurname() + "\" as" + personId;
+
+            if (condition.test(person)) {
+                personLine = postProcess.apply(personLine);
+            }
+
+            result += personLine + "\n";
+
+        }
+
+        for (Person person : people) {
+            for (Person child : person.getChildren()) {
+                String parentId = idMap.get(person);
+                String childId = idMap.get(child);
+                result += parentId + " --> " + childId + "\n";
+            }
+        }
+
+        result += "@enduml\n";
+        return result;
+
+    }
+
+
+
+
 
 
 
