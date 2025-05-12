@@ -5,56 +5,47 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ICDCodeTabularOptimizedForTime implements ICDCodeTabular {
-    private Map<String, String> codeToDesc;
+    private Map<String, String> codeToDescription = new HashMap<>();
 
-    public ICDCodeTabularOptimizedForTime(String path) throws IOException {
-        this.codeToDesc = new HashMap<String, String>();
-        loadFromFile(path);
-    }
+    public ICDCodeTabularOptimizedForTime(String filePath) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int lineNumber = 0;
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                if (lineNumber < 88) continue;
 
-    private void loadFromFile(String path) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
-        String line;
-        int lineNumber = 0;
+                line = line.trim();
 
+                /*
+                Wyjaśnienie regexa:
+                ^ - początek linii
+                [A-Z] - pojedyncza duża litereka
+                [0-9]{2} - dwie cyferki od 0-9
+                (\\.[0-9]+)? - część opcjonalna, czyli kropka a po niej jedna lub lika cyferek
+                \\s+ - jedna lub więcej spacji
+                .+ - jeden luv więcej znaków
+                $ - koniec linii
 
-        while ((line  = reader.readLine()) != null){
-            lineNumber++;
+                wystarczy złączyć to wszystko w jedno i mamy regexa wykrywjącego nasze kody IDC-10
+                 */
 
-            if (lineNumber < 88) {
-                continue;
-            }
-
-            line = line.trim();
-
-            // Jeśli lina jest pusta, lub nie zaczyna się od literki, kodu musi zaczynać się od literki, idziemy dalej
-            if (line.isEmpty() || !Character.isLetter(line.charAt(0))) {
-                continue;
-            }
-
-            int firstSpace = line.indexOf(' ');
-            if (firstSpace == -1) {
-                continue;
-            }
-
-            String code = line.substring(0, firstSpace).trim();
-            String desc = line.substring(firstSpace + 1).trim();
-
-
-            // I znowu sprawdzamy czy kod zaczyna sie od Literki i dwóch cyferek
-            if (code.length() >= 3 && Character.isLetter(code.charAt(0)) && Character.isDigit(code.charAt(1)) && Character.isDigit(code.charAt(2))) {
-                this.codeToDesc.put(code, desc);
+                if (line.matches("[A-Z][0-9]{2}(\\.[0-9]+)?\\s+.+")) {
+                    String[] parts = line.split("\\s+", 2);
+                    if (parts.length == 2) {
+                        this.codeToDescription.put(parts[0], parts[1]);
+                    }
+                }
             }
         }
-        reader.close();
     }
 
     @Override
-    public String getDescription(String code) throws IndexOutOfBoundsException {
-        if (!this.codeToDesc.containsKey(code)) {
-            throw new IndexOutOfBoundsException("Nie znaleziono opisu dla kodu: " + code);
+    public String getDescription(String code) {
+        if (!this.codeToDescription.containsKey(code)) {
+            throw new IndexOutOfBoundsException("Kod nieznaleziony: " + code);
         }
-        return this.codeToDesc.get(code);
+        return this.codeToDescription.get(code);
     }
 }
 

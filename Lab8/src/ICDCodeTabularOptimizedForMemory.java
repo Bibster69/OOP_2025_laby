@@ -4,50 +4,30 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ICDCodeTabularOptimizedForMemory implements ICDCodeTabular {
-    private String path;
+    private String filePath;
 
-    public ICDCodeTabularOptimizedForMemory(String path) {
-        this.path = path;
+    public ICDCodeTabularOptimizedForMemory(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override
-    public String getDescription(String code) {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(this.path));
+    public String getDescription(String code) throws IndexOutOfBoundsException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))) {
             String line;
             int lineNumber = 0;
-
-            while ((line = br.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 lineNumber++;
-
-                if (lineNumber < 88) {
-                    continue;
-                }
+                if (lineNumber < 88) continue;
 
                 line = line.trim();
-                if (line.isEmpty() || !Character.isLetter(line.charAt(0))) {
-                    continue;
-                }
-
-                int firstSpace = line.indexOf(' ');
-                if (firstSpace == -1) {
-                    continue;
-                }
-
-                String currentCode = line.substring(0, firstSpace).trim();
-                String description = line.substring(firstSpace + 1).trim();
-
-                if (currentCode.equals(code)) {
-                    br.close();
-                    return description;
+                if (line.startsWith(code + " ")) {
+                    return line.substring(code.length()).trim();
                 }
             }
-            br.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Błąd odczytu pliku", e);
         }
-        throw new IndexOutOfBoundsException("No desc. for code: " + code);
+        throw new IndexOutOfBoundsException("Kod nieznaleziony: " + code);
     }
-
-
 }
+
