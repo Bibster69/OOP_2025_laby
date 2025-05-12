@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String filePath = "resources/zgony.csv"; // względna ścieżka do pliku
+//        String filePath = "resources/zgony.csv"; // względna ścieżka do pliku
 
 
 //        // Zad.1
@@ -32,43 +32,43 @@ public class Main {
 //
 //        // Zad.2
 //
-//        System.out.println(stats.get(12).getAgeBracket(12));
+//        System.out.println(stats.get(22).getAgeBracket(22));
 //
-        // Zad.3
+//         Zad.3
 
-//        DeathCauseStatisticList list = new DeathCauseStatisticList();
-//        list.repopulate("resources/zgony.csv");
-//
-//        int age = 75;
-//        int topN = 5;
-//
-//        System.out.println("Top " + topN + " najśmiertelniejszych chorób dla wieku " + age + ":");
-//        List<DeathCauseStatistic> topDiseases = list.mostDeadlyDiseases(age, topN);
-//        for (DeathCauseStatistic stat : topDiseases) {
-//            System.out.println(stat.getIcd10Code());
-//        }
+        DeathCauseStatisticList list = new DeathCauseStatisticList();
+        list.repopulate("resources/zgony.csv");
+
+        int age = 75;
+        int topN = 5;
+
+        System.out.println("Top " + topN + " najśmiertelniejszych chorób dla wieku " + age + ":");
+        List<DeathCauseStatistic> topDiseases = list.mostDeadlyDiseases(age, topN);
+        for (DeathCauseStatistic stat : topDiseases) {
+            System.out.println(stat.getIcd10Code());
+        }
 //
 //        // Zad. 4
 //
-        ICDCodeTabular timeOptimized = new ICDCodeTabularOptimizedForTime("resources/icd10_descriptions.txt");
-        ICDCodeTabular memoryOptimized = new ICDCodeTabularOptimizedForMemory("resources/icd10_descriptions.txt");
-
-        String descTime = "N/A";
-        String descMemory = "N/A";
-        try {
-            descTime = timeOptimized.getDescription("A00");
-        } catch (IndexOutOfBoundsException e) {
-            descTime = "(not found)";
-        }
-        System.out.println("  Description (time-optimized): " + descTime);
-
-        try {
-            descMemory = memoryOptimized.getDescription("A01.00");
-        } catch (IndexOutOfBoundsException e) {
-            descMemory = "(not found)";
-        }
-        System.out.println("  Description (memory-optimized): " + descMemory);
-
+//        ICDCodeTabular timeOptimized = new ICDCodeTabularOptimizedForTime("resources/icd10_descriptions.txt");
+//        ICDCodeTabular memoryOptimized = new ICDCodeTabularOptimizedForMemory("resources/icd10_descriptions.txt");
+//
+//        String descTime = "N/A";
+//        String descMemory = "N/A";
+//        try {
+//            descTime = timeOptimized.getDescription("A00");
+//        } catch (IndexOutOfBoundsException e) {
+//            descTime = "(not found)";
+//        }
+//        System.out.println("  Description (time-optimized): " + descTime);
+//
+//        try {
+//            descMemory = memoryOptimized.getDescription("A01.00");
+//        } catch (IndexOutOfBoundsException e) {
+//            descMemory = "(not found)";
+//        }
+//        System.out.println("  Description (memory-optimized): " + descMemory);
+//
+//    }
     }
 }
-

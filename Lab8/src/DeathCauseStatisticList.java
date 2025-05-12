@@ -63,7 +63,7 @@ public class DeathCauseStatisticList {
             }
         }
 
-        List<DeathCauseStatistic> sortedStats = new ArrayList<>(validStats);
+        List<DeathCauseStatistic> sortedStats = new ArrayList<>();
         for (int i = 0; i < n && i < validStats.size(); i++) {
             sortedStats.add(validStats.get(i));
         }

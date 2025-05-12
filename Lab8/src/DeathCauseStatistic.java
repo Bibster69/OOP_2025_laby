@@ -2,13 +2,14 @@ public class DeathCauseStatistic {
     private String icd10Code;
     private int[] deathsByAgeGroup;
 
+    // Konstruktor prywatny, będzie używany przez fromCsvLine
     private DeathCauseStatistic(String icd10Code, int[] deathsByAgeGroup) {
         this.icd10Code = icd10Code;
         this.deathsByAgeGroup = deathsByAgeGroup;
     }
 
     public String getIcd10Code() {
-        return icd10Code;
+        return this.icd10Code;
     }
 
     public static DeathCauseStatistic fromCsvLine(String line) {
@@ -38,7 +39,7 @@ public class DeathCauseStatistic {
         for (int i = 0; i < AGE_BRACKETS.length; i++) {
             int[] brackets = AGE_BRACKETS[i];
             if (age >= brackets[0] && age <= brackets[1]) {
-                return new AgeBracketDeaths(brackets[0], brackets[1], deathsByAgeGroup[i]);
+                return new AgeBracketDeaths(brackets[0], brackets[1], this.deathsByAgeGroup[i]);
             }
         }
         return null;
@@ -55,10 +56,9 @@ public class DeathCauseStatistic {
             this.deathCount = deathCount;
         }
 
-
         @Override
         public String toString() {
-            return String.format("Wiek: %d-%d, zgony: %d", young, old, deathCount);
+            return String.format("Wiek: %d-%d, zgony: %d", this.young, this.old, this.deathCount);
         }
 
     }
