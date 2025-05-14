@@ -3,13 +3,13 @@
 Klasa jest to szablon, receptura za pomocą której tworzymy obiekty.
 
 Definiuje ona pola, czy też atrybuty danej klasy, które są jej cechami, jak np.rasa kota, moc samochodu, smak lodów.
-Do tworzenia klasy wykorzystujemy specjalną metodę zwaną konstruktorem. Jest to dokładny zbior instrukcji potrzebny żeby utworzyć dany obiekt klasy, czyli mamy klasę ciasto, wiemy że składa ona się z danych składnników (pól), a w konstruktorze mamy konkretną receptórę tworzącą to ciasto.
+Do tworzenia klasy wykorzystujemy specjalną metodę zwaną konstruktorem. Jest to dokładny zbiór instrukcji potrzebny żeby utworzyć dany obiekt klasy, czyli mamy klasę ciasto, wiemy że składa ona się z danych składników (pól), a w konstruktorze mamy konkretną recepturę tworzącą to ciasto.
 
 ## Obiekty
 Obiekty to konkretne, gotowe do użytku instancje danej klasy utworzone za pomocą konstruktora, lub innych metod wytwórczych. Do konkretnego obiektu klay, wewnątrz jej kodu odwołujemy się za pomocą słowa kluczowego **this**. Jest ono niezbędne gdy argument metody, oraz pole klasy mają taką samą nazwę.
 
 ## Metody
-Klasa zawiera też swoje metody, czyli należące do niej zachowania, jak szcekanie psa, uruchamianie samochodu, skakanie kota. Specjalnym typem metod są akcesory i mutatory, służące do zwracania lub zmieniania pól klasy. Sa one niezbędne gdy mamy do czynienia z enkapsulacją.
+Klasa zawiera też swoje metody, czyli należące do niej zachowania, jak szczekanie psa, uruchamianie samochodu, skakanie kota. Specjalnym typem metod są akcesory i mutatory, służące do zwracania lub zmieniania pól klasy. Są one niezbędne gdy mamy do czynienia z enkapsulacją.
 
 W zależności od tego czy są statyczne czy nie do ich wywołania potrzebujemy konkretnego obiektu, lub samej klasy.
 
@@ -17,12 +17,12 @@ Metody statyczne możemy wywoływać na klasie.
 
 ## Enkapsulacja
 
-Jest to sposób ograniczania dostępu do pól i metod klasy. Mamy 3 poziomy / typy dostepu:
+Jest to sposób ograniczania dostępu do pól i metod klasy. Mamy 3 poziomy / typy dostępu:
 
 
-1.   Public - dostęp do danego pola / metody nie jest niczym ograniczony.
-2.   Private - do danego pola mamy dost.ep tylko wewnątrz danej klasy, lub za pomocą gettarów i setterów.
-3.  Protected - to samo co private, tylko do pola mają jeszcze dotęp klasy ddziedziczące po naszej klasie.
+1.   Public - dostęp do danego pola / metody nie jest niczym ograniczony.
+2.   Private - do danego pola mamy dostęp tylko wewnątrz danej klasy, lub za pomocą getterów i setterów.
+3.  Protected - to samo co private, tylko do pola mają jeszcze dostęp klasy dziedziczące po naszej klasie.
 
 
 
@@ -55,7 +55,7 @@ public class RaceCar {
         return downforce;
     }
 
-    // Mutatoru (Settery)
+    // Mutatory (Settery)
     public void setDrivetrain(String drivetrain) {
         this.drivetrain = drivetrain;
     }
@@ -128,10 +128,10 @@ public class Main {
 
 W programowianiu obiektowy dziedziczenie jest to zabieg w którym jedna klasa jest pochodną poprzedniej poprzedniej klasy, i przejmuje / dziedziczący po niej pola i metody.
 
-Dziedziczone metody można wywoływać w klasie pochodznej, za pomocą **super()**. Metody te można też nadpisywać kompletnie za pomocą **@Override**.
+Dziedziczone metody można wywoływać w klasie pochodnej, za pomocą **super()**. Metody te można też nadpisywać kompletnie za pomocą **@Override**.
 Aby klasa dziedziczyła po innej wykorzystujemy **extends**.
 
-W javie jeden obiekt może dziedziczyć po wielu obiektach wieć multiple iheritence jest możliwe.
+W javie jeden obiekt  **NIE** może dziedziczyć po wielu obiektach więc multiple inheritance jest **NIE**możliwe.
 
 **Car.java**
 ```java
@@ -244,7 +244,7 @@ public class RaceCar extends Car {
 
 # Klasy Abstrakcyjne
 
-Z klas abstrakcyjnych **nie możemy tworzyć obiektów**, oraz zawierają one metody abstrakcyjne. Metody te nie mają żadnej implmentacji a wszystkie klasy dziedziczące po klasie metody implementować. Klasy same w sobie mogą zawierać pola i normalne zaimplementowane metody.
+Z klas abstrakcyjnych **nie możemy tworzyć obiektów**, oraz zawierają one metody abstrakcyjne. Metody te nie mają żadnej implementacji a wszystkie klasy dziedziczące po klasie metody implementować. Klasy same w sobie mogą zawierać pola i normalne zaimplementowane metody.
 
 Abstract Car
 
@@ -384,7 +384,7 @@ public class RoadCar extends Car {
 
 
 # Kontenery
-Czy też Collections pozwalająn na grupowanie obiektów danej klasy, jak Integer, String, RaceCar w jedną zmienną. W Javie mamy wiele typów Kolekcji:
+Czy też Collections pozwalają na grupowanie obiektów danej klasy, jak Integer, String, RaceCar w jedną zmienną. W Javie mamy wiele typów Kolekcji:
 
 https://www.geeksforgeeks.org/collections-in-java-2/
 
@@ -438,5 +438,78 @@ Identyczne do kolejki, tylko stratego dodawania i wyjmowania jest inna. Tym raze
 Stack<RaceCar> stack = new Stack<>();
 stack.push(new RaceCar("RWD", 750, 360.0f, 80.0f));
 stack.push(new RaceCar("AWD", 870, 400.0f, 90.0f));
+```
+# Interfejs
+
+Interfejs to zestaw metod które muszą zostać za implementoważe poprzez klasę implementującą dany interfejs. Aby klasa wykorzystała dany interfejs wukorzystujemy keyword **implements**. Klasa może implementować wiele interfejsów na raz.
+
+Interfejs Refualable
+
+```java
+public interface Refuelable {
+    void refuel(float amount);
+}
+```
+RaceCar z interfejsem
+
+```java
+public class RaceCar extends Car implements Refuelable {
+    private float downforce;
+    private float fuelLevel;
+    private float fuelTankCapacity;
+
+    public RaceCar(String drivetrain, int power, float downforce, float fuelTankCapacity) {
+        super(drivetrain, power, 2); // Race cars usually have 2 doors
+        this.downforce = downforce;
+        this.fuelTankCapacity = fuelTankCapacity;
+        this.fuelLevel = 0;
+    }
+
+    @Override
+    public void refuel(float amount) {
+        fuelLevel = Math.min(fuelLevel + amount, fuelTankCapacity);
+        System.out.println("Zatankowano wyścigówkę " + fuelLevel + "L");
+    }
+
+    /// Reszta tak samo jak poprzednio
+}
+```
+# Wyjątki
+
+Wyjątki czyli inaczej błęd które nasz kod morze napotkać podczas działania, i wtedy java rzuca wyjątek. Wiele z nich trzeba jawnie w jave przechwycić i obsłużyć. Wykorzystujemy do tego słowa kluczowe **try** i **cath**.
+try - słyży do zaznaczenia części kodu która będzie testowana pod kątem rzucania błędów podczas działania
+catch - pozwala zdefiniować blok kodu który będzie wykonywany gdy dany wyjątek zostanie złapany.
+Morzemy równierz pisać własne wyjątki dziedziczac po klasie Exception
+
+OverfillException
+```java
+public class OverfillException extends Exception {
+    public OverfillException(String message) {
+        super(message);
+    }
+}
+```
+```java
+public class RaceCar extends Car implements Refuelable {
+    private float downforce;
+    private float fuelLevel;
+    private float fuelTankCapacity;
+
+    public RaceCar(String drivetrain, int power, float downforce, float fuelTankCapacity) {
+        super(drivetrain, power, 2);
+        this.downforce = downforce;
+        this.fuelTankCapacity = fuelTankCapacity;
+        this.fuelLevel = 0;
+    }
+
+    @Override
+    public void refuel(float amount) throws OverfillException { // zaznaczamy że metoda rzuca dany wyjątek
+        if (fuelLevel + amount > fuelTankCapacity) {
+            throw new OverfillException("Nadmiar paliwa, nie możemy zatankwać więcej niż " + fuelTankCapacity + "L");
+        }
+        fuelLevel += amount;
+        System.out.println("Zatankowano do " + fuelLevel + "L");
+    }
+}
 ```
 
