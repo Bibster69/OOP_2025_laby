@@ -24,7 +24,7 @@ public class ICDCodeTabularOptimizedForTime implements ICDCodeTabular {
                 [0-9]{2} - dwie cyferki od 0-9
                 (\\.[0-9]+)? - część opcjonalna, czyli kropka a po niej jedna lub lika cyferek
                 \\s+ - jedna lub więcej spacji
-                .+ - jeden luv więcej znaków
+                .+ - jeden lub więcej znaków
                 $ - koniec linii
 
                 wystarczy złączyć to wszystko w jedno i mamy regexa wykrywjącego nasze kody IDC-10
