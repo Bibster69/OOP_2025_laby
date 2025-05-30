@@ -34,16 +34,16 @@ public class Main {
 
         try {
             System.out.println("\n--- Running Single-threaded Brightness Adjustment (Raster) ---");
-            processor.loadImage(inputImagePath); // Load the image for this test
+            processor.loadImage(inputImagePath); 
 
-            startTime = System.currentTimeMillis(); // RECORD START TIME
-            processor.adjustBrightness(70); // Execute the method
-            endTime = System.currentTimeMillis();   // RECORD END TIME
+            startTime = System.currentTimeMillis(); 
+            processor.adjustBrightness(70); 
+            endTime = System.currentTimeMillis();   
 
-            singleThreadTime = endTime - startTime; // Calculate duration
+            singleThreadTime = endTime - startTime;
             System.out.println("Single-threaded brightness adjustment finished in " + singleThreadTime + " ms.");
 
-            processor.saveImage("img_single_thread.jpg"); // Save the result
+            processor.saveImage("img_single_thread.jpg"); 
 
         } catch (IOException e) {
             System.err.println("I/O error during single-threaded process: " + e.getMessage());
@@ -52,27 +52,25 @@ public class Main {
             System.err.println("Error in single-threaded process: " + e.getMessage());
         }
 
-        // --- Multi-threaded execution ---
+        
         try {
             System.out.println("\n--- Running Multi-threaded Brightness Adjustment (Raster) ---");
-            // IMPORTANT: Reload the image here!
-            // If you don't, the multi-threaded method will operate on the already
-            // modified image from the single-threaded test, leading to incorrect comparisons.
+           
             processor.loadImage(inputImagePath);
 
-            startTime = System.currentTimeMillis(); // RECORD START TIME
-            // Determine the number of threads used for clarity in output
+            startTime = System.currentTimeMillis(); 
+           
             int numCores = Runtime.getRuntime().availableProcessors();
             int numThreads = numCores == 0 ? 1 : numCores;
             System.out.println("Using " + numThreads + " threads.");
 
-            processor.adjustBrightnessMultiThreaded(70); // Execute the method
-            endTime = System.currentTimeMillis();     // RECORD END TIME
+            processor.adjustBrightnessMultiThreaded(70); 
+            endTime = System.currentTimeMillis();    
 
-            multiThreadTime = endTime - startTime;    // Calculate duration
+            multiThreadTime = endTime - startTime;   
             System.out.println("Multi-threaded brightness adjustment finished in " + multiThreadTime + " ms.");
 
-            processor.saveImage("img_multi_thread.jpg"); // Save the result
+            processor.saveImage("img_multi_thread.jpg"); 
 
         } catch (IOException e) {
             System.err.println("I/O error during multi-threaded process: " + e.getMessage());
@@ -81,7 +79,7 @@ public class Main {
             System.err.println("Error in multi-threaded process: " + e.getMessage());
         } catch (InterruptedException e) {
             System.err.println("Multi-threaded process interrupted: " + e.getMessage());
-            Thread.currentThread().interrupt(); // Restore the interrupted status
+            Thread.currentThread().interrupt(); 
         }
     }
 }
