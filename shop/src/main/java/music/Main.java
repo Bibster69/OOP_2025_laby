@@ -10,48 +10,48 @@ import java.sql.Statement;
 public class Main {
     public static void main(String[] args) {
 
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            System.out.println("SQLite driver loaded!");
-//        } catch (ClassNotFoundException e) {
-//            System.err.println("SQLite JDBC driver not found: " + e.getMessage());
-//        }
+        try {
+            Class.forName("org.sqlite.JDBC");
+            System.out.println("SQLite driver loaded!");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC driver not found: " + e.getMessage());
+        }
 
         // Zad.1
 
-//        DatabaseConnection db = new DatabaseConnection();
-//
-//        try {
-//            // można użyć nazwy pliku "test.db"
-//            db.connect("test.db");
-//            Connection conn = db.getConnection();
-//
-//            Statement stmt = conn.createStatement();
-//
-//            // 1. Tworzymy tabele
-//            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)");
-//
-//            // 2. Dodajemy 2 rzedy
-//            stmt.executeUpdate("INSERT INTO users (name) VALUES ('Alice')");
-//            stmt.executeUpdate("INSERT INTO users (name) VALUES ('Bob')");
-//
-//            // 3. Czytamy te rzedy
-//            ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-//
-//            // 4. Wypisujemy je
-//            while (rs.next()) {
-//                int id = rs.getInt("id");
-//                String name = rs.getString("name");
-//                System.out.println("User ID: " + id + ", Name: " + name);
-//            }
-//
-//            rs.close();
-//            stmt.close();
-//            db.disconnect();
-//
-//        } catch (SQLException e) {
-//            System.out.println("Database error: " + e.getMessage());
-//        }
+        DatabaseConnection db = new DatabaseConnection();
+
+        try {
+            // można użyć nazwy pliku "test.db"
+            db.connect("test.db");
+            Connection conn = db.getConnection();
+
+            Statement stmt = conn.createStatement();
+
+            // 1. Tworzymy tabele
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)");
+
+            // 2. Dodajemy 2 rzedy
+            stmt.executeUpdate("INSERT INTO users (name) VALUES ('Alice')");
+            stmt.executeUpdate("INSERT INTO users (name) VALUES ('Bob')");
+
+            // 3. Czytamy te rzedy
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users");
+
+            // 4. Wypisujemy je
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                System.out.println("User ID: " + id + ", Name: " + name);
+            }
+
+            rs.close();
+            stmt.close();
+            db.disconnect();
+
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
 
 //        DatabaseConnection db = new DatabaseConnection();
 //        try {
