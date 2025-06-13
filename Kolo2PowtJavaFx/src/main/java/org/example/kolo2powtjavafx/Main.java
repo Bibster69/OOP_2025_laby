@@ -15,7 +15,7 @@ public class Main extends Application {
         StackPane root = new StackPane(gameCanvas);
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("GameCanvas Example");
+        primaryStage.setTitle("Gra");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
